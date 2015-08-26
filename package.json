@@ -1,0 +1,15 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server for testing the file upload with some other data",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jimokanghanchao@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.10.2",
+    "multer": "^0.1.6"
+  }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Google Web Fonts ================================================== -->
+    <!--<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>-->
+    <!-- Basic Page Needs ================================================== -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+    <title>Demo</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="jimohou.me">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <!-- Mobile Specific Metas ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <meta name="HandheldFriendly" content="True">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    
+  </head>
+
+  <body id="ng-app" ng-app="app">
+    <!-- - - - - - - - - - - - - - Header - - - - - - - - - - - - - - - - -->
+    <header id="header">
+    <nav></nav>
+    </header>
+    <!-- - - - - - - - - - - - - - Wrapper - - - - - - - - - - - - - - - - -->
+    <div id="wrapper">
+      <section class="align-center make-it-appear-top" style="margin-top:50px;">
+      <h1>file uploader with other customize data</h1>
+      </section>
+      <div ng-controller="Ctrl">
+        <input nv-file-select="" type="file" uploader="uploader" mutiple/>
+        <ul>
+          <li ng-repeat="item in uploader.queue" >{{item.file.name}}</li>
+        </ul>
+        <button type="button" value="Upload" ng-click="uploader.uploadAll()">Upload</button>
+      </div>
+      <!-- - - - - - - - - - - - - - Footer - - - - - - - - - - - - - - - - -->
+      <footer id="footer"></footer>
+    </div>
+  <script src="/angular/angular.js"></script>
+  <script src="/angular-file-upload/dist/angular-file-upload.min.js"></script>
+  <script type="text/javascript">
+  var app = angular.module('app',['angularFileUpload']);
+  app.controller('Ctrl', ['$scope','$http','FileUploader',function($scope,$http,FileUploader){
+    //a simple model to bind to and send to the server
+    var t = new Date().getTime();
+    var model = {
+      timestamp: t
+    };
+    var uploader = $scope.uploader = new FileUploader(
+      {
+      url: '/api/file'
+      ,formData: [model]//the customize data
+    });
+    uploader.onAfterAddingFile = function(item){
+      //change the model value that will sent to the server when uploading
+      uploader.formData[0].timestamp = new Date().getTime(); 
+    };
+    uploader.onSuccessItem = function(item, response, status, headers){
+      console.log(response);
+    };
+  }]);
+  </script> 
+</body>
+</html>
